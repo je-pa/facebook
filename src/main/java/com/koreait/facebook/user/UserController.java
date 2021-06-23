@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping("/user")
@@ -34,5 +35,13 @@ public class UserController {
     public String auth(UserEntity param){
         int result = service.auth(param);
         return "redirect:login?auth="+result;
+    }
+
+    @GetMapping("/profile")
+    public void profile() {}
+
+    @PostMapping("/profileImg")
+    public String profileImg(MultipartFile[] files) {
+        return "redirect:profile";
     }
 }
