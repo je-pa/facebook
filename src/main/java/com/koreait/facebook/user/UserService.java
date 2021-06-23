@@ -46,4 +46,11 @@ public class UserService {
     public int auth(UserEntity param){
         return mapper.auth(param);
     }
+
+    //로그인
+    public String login(UserEntity param) {
+        UserEntity loginUser = mapper.selUser(param);
+
+        return "";
+    }
 }
