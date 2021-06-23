@@ -13,6 +13,7 @@
     <select id="selUser" resultType="UserEntity">
         SELECT * FROM t_user
         WHERE email = #{email}
+        AND authCd IS NULL
     </select>
 
     <update id="auth">

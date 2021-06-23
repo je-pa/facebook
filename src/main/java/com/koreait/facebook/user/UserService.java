@@ -51,10 +51,4 @@ public class UserService {
         return mapper.auth(param);
     }
 
-    //로그인
-    public String login(UserEntity param) {
-        UserEntity loginUser = mapper.selUser(param);
-
-        return "";
-    }
 }
