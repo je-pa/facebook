@@ -5,6 +5,7 @@ import com.koreait.facebook.common.MySecurityUtils;
 import com.koreait.facebook.user.model.UserEntity;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,11 +19,14 @@ public class UserService {
     @Autowired
     private MySecurityUtils secUtils;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     public int join(UserEntity param){
         String authCd = secUtils.getRandomDigit(5);
 
         //비밀번호 암호화
-        String hashedPw = BCrypt.hashpw(param.getPw(), BCrypt.gensalt());
+        String hashedPw = passwordEncoder.encode(param.getPw());
         param.setPw(hashedPw);
         param.setAuthCd(authCd);
         int result = mapper.join(param);

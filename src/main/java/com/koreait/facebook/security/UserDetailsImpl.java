@@ -4,6 +4,7 @@ import com.koreait.facebook.user.model.UserEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.io.Serializable; ///////...
 import java.util.Collection;
 
 public class UserDetailsImpl implements UserDetails {
