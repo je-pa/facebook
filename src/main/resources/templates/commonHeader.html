@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="ko"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <header th:fragment="header">
     <nav>
         <ul>
-            <li>로그인</li>
-            <li><a th:href="@{/user/logout}">로그아웃</a></li>
+            <li sec:authorize="isAnonymous()">로그인</li>
+
+            <li sec:authorize="isAuthenticated()"><a th:href="@{/user/logout}">로그아웃</a></li>
         </ul>
     </nav>
 </header>
