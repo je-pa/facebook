@@ -1,17 +1,17 @@
 package com.koreait.facebook.user;
 
-import com.koreait.facebook.common.EmailServiceImpl;
+import com.koreait.facebook.common.EmailService;
 import com.koreait.facebook.common.MySecurityUtils;
 import com.koreait.facebook.user.model.UserEntity;
-import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class UserService {
     @Autowired
-    private EmailServiceImpl email;
+    private EmailService email;
 
     @Autowired
     private UserMapper mapper;
@@ -51,4 +51,7 @@ public class UserService {
         return mapper.auth(param);
     }
 
+    public void profileImg(MultipartFile[] imgArr) {
+
+    }
 }

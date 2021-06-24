@@ -24,7 +24,11 @@ spring:
     password: koreait
     driver-class-name: org.mariadb.jdbc.Driver
 #    url를 보고 설정해주기 때문에 안줘도 상관은 없을것이다 랬는데 안된다
-
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 30MB
+      location: D:/springImg
 mybatis:
   mapper-locations: mybatis-mapper/**/*.xml
   type-aliases-package: com.koreait.facebook

@@ -41,7 +41,8 @@ public class UserController {
     public void profile() {}
 
     @PostMapping("/profileImg")
-    public String profileImg(MultipartFile[] files) {
+    public String profileImg(MultipartFile[] img) {
+        service.profileImg(img);
         return "redirect:profile";
     }
 }
