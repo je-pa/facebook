@@ -1,0 +1,14 @@
+#flexContainer{
+    width: 100%;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.swiper-container{
+    width: 100vw;
+    height: 70vw;
+    background-color: white;
+}
+.swiper-slice { display: flex; justify-content:center; }
+.no-main-profile{font-size: 30px;}

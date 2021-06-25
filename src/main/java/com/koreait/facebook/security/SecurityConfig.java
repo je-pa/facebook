@@ -13,9 +13,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-@Configuration
-@EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+@Configuration//설정파일
+@EnableWebSecurity //안주면 설정은 됐는데 시큐리티를 안킴
+public class SecurityConfig extends WebSecurityConfigurerAdapter {//오버라이딩 하고 싶어서 ( 디폴트값으로 사용 안하려구!!)
     @Autowired
     private UserDetailsService userDetails;
 
@@ -26,7 +26,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/css/**", "/js/**", "/img/**", "/error", "favicon.ico", "/resources/**");
+        web.ignoring().antMatchers("/pic/**","/css/**", "/js/**", "/img/**", "/error", "favicon.ico", "/resources/**");
     }
 
     @Override
@@ -34,7 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
 
         http.authorizeRequests()
-                .antMatchers("/user/login", "/user/join").permitAll()
+                .antMatchers("/user/login", "/user/join", "/user/auth").permitAll()
                 .anyRequest().authenticated();
 
         http.formLogin()

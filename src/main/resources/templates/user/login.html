@@ -3,13 +3,15 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorator="basicLayout">
-
+<!--파일기준이었으면 ../basicLayout 으로 했을텐데 웹(주소값)기준이다?-->
+<!--yaml파일에서의 prefix부분 / 기준으로찾는거 같음-->
 <th:block layout:fragment="css">
   <link rel="stylesheet" th:href="@{/css/user/login.css}">
 </th:block>
 
 <th:block layout:fragment="content">
   <div th:if="${param.needEmail != null and param.needEmail[0]=='1'}">이메일 인증을 해주세요</div>
+<!--  밑에 userEntity에 값을 넣어줘 버려서 email을 needEmail로 바꿔서 중복됨을 없앴다-->
   <div th:if="${param.auth != null and param.auth[0]=='1'}">인증되었습니다.</div>
   <!--/*  <div th:if="${#request.getParameter('auth')=='1'}" th:text="authauth"></div>*/-->
   <div th:if="${param.auth != null and param.auth[0]=='0'}">인증에 실패하였습니다.</div>
