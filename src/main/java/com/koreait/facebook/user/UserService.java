@@ -11,7 +11,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class UserService {
@@ -56,9 +58,13 @@ public class UserService {
     }
 
     public void sendEmail(){
-        String to= "qkrwldms0502@naver.com";
-        String subject = "제목입";
-        String txt = "내용입";
+//        String to= "qkrwldms0502@naver.com";
+//        String subject = "제목입";
+//        String txt = "내용입";
+//        email.sendSimpleMessage(to, subject, txt);
+        String to = "qkrwldms0502@naver.com";
+        String subject = "제ddd";
+        String txt = "내용입니sss <a href=\"http://localhost:8090/user/login\">로그인으로이동</a>";
         email.sendSimpleMessage(to, subject, txt);
     }
 
@@ -102,9 +108,21 @@ public class UserService {
     }
 
     //메인 이미지 변경
-    public int updUserMainProfile(UserProfileEntity param) {
-        param.setIuser(auth.getLoginUserPk());
-        return mapper.updUserMainProfile(param);
+    //Map< 키값 , 결과값>
+    public Map<String,Object> updUserMainProfile(UserProfileEntity param) {
+        UserEntity loginUser = auth.getLoginUser();
+
+        param.setIuser(loginUser.getIuser());
+        int result = mapper.updUserMainProfile(param);
+        if(result==1){ //시큐리티 세션에 있는 loginUser에 있는 mainProfile값도 변경
+            System.out.println("img : "+param.getImg());
+            loginUser.setMainProfile(param.getImg());
+        }
+        Map<String, Object> res = new HashMap<>();
+        res.put("result", result);
+        res.put("img",param.getImg());
+
+        return res;
     }
 
 }

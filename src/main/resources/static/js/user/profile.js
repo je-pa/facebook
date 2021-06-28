@@ -7,7 +7,7 @@ const modalCloseElem = document.querySelector('section .modal .modal_close');
 const profileImgParentList = document.querySelectorAll('.profile-img-parent');
 profileImgParentList.forEach(item => {
     const iElem = item.querySelector('i');
-    if(iElem != null) {
+    if(iElem != null) { //메인  프로필일때 null이다
         addIElemEvent(iElem);
     }
 });
@@ -32,11 +32,35 @@ function changeMainProfile(iprofile) {
                     break;
                 case 1:
                     setMainProfileIcon(iprofile);
+
+
+                    //바뀐 메인 이미지 img값을 찾기
+                    const findParentDiv = profileImgParentList.find(item=> item.dataset.iprofile === iprofile)
+                    // const findParentDiv = profileImgParentList.find(item=>{
+                    //     return item.dataset.iprofile === iprofile;
+                    // })
+                    // const findParentDiv = profileImgParentList.find(function(item){
+                    //     return item.dataset.iprofile === iprofile;
+                    // }) true가 되는순간 주소값 리턴
+                    const container = findParentDiv.parentNode;
+                    const imgElem = containerElem.querySelector('img');
+
+                    //sector에 있는 프로필 이미지 변경
+                    // const src = profileImgElem.src;
+                    //
+                    // const frontSrc = substring(0, src.lastIndexOf("/"));
+                    // const resultSrc = `${frontSrc}/${myJson.img}`;
+                    // profileImgElem.src= resultSrc;
+                    profileImgElem.src= imgElem.src;
+
+                    //헤더에 있는 프로필 이미지 변경
+                    const headerProfileImgElem = document.querySelector('header .span__profile img');
+                    headerProfileImgElem.src = resultSrc;
                     break;
             }
         });
 }
-
+                            //현재 mainprofile로 바뀐 iprofile값
 function setMainProfileIcon(iprofile) {
     profileImgParentList.forEach(item => {
         item.innerHTML = '';
@@ -59,5 +83,6 @@ profileImgElem.addEventListener('click', () => {
 
 //모달창 닫기
 modalCloseElem.addEventListener('click', () => {
-    modalElem.classList.add('hide');
+   // modalElem.classList.add('hide');
+    location.reload();
 })
