@@ -20,6 +20,7 @@
         SET authCd = null
         WHERE email = #{email} AND authCd = #{authCd}
     </update>
+
     <update id="updUser">
         UPDATE t_user
         <set>
@@ -38,6 +39,7 @@
         </set>
         WHERE iuser = #{iuser}
     </update>
+
     <update id="updUserMainProfile">
         UPDATE t_user A
         INNER JOIN t_user_profile B
