@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorator="basicLayout">
-
+<head><title>프로필</title></head>
 <th:block layout:fragment="css">
   <link rel="stylesheet" th:href="@{/css/user/profile.css}">
   <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
@@ -38,8 +38,8 @@
           <!-- Slides -->
           <div class="swiper-slide" th:each="item : ${profileList}">
             <div>
-              <div th:id="'img_'+${item.iprofile}" th:unless="${item.img==auth.mainProfile}">
-                <i class="no-main-profile pointer fas fa-address-book"></i>메인아님
+              <div class="profile-img-parent" th:attr="data-iprofile=${item.iprofile}">
+                <i th:unless="${item.img == auth.mainProfile}" class="no-main-profile pointer fas fa-bell"></i>
               </div>
               <img th:src="@{/pic/profile/{iuser}/{img}(iuser=${auth.iuser}, img=${item.img})}">
             </div>

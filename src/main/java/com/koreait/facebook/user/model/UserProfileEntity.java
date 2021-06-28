@@ -1,4 +1,4 @@
-package com.koreait.facebook.user;
+package com.koreait.facebook.user.model;
 
 import lombok.Getter;
 import lombok.Setter;
