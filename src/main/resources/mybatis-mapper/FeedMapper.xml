@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.koreait.facebook.feed.FeedMapper">
-    <insert id="insFeed">
+    <insert id="insFeed" useGeneratedKeys="true" keyProperty="ifeed">
         INSERT INTO t_feed
         (location, ctnt, iuser)
         VALUES
@@ -13,4 +13,14 @@
         VALUES
         (#{ifeed},#{img})
     </insert>
+    <select id="selFeedList" resultType="FeedDomain">
+        SELECT a.ifeed,a.location, a.ctnt, a.iuser, a.regdt
+             ,b.ifeedimg, b.img, c.nm AS writer, c.mainProfile, C.mainProfile
+        FROM t_feed a
+                 LEFT JOIN t_feed_img b
+                           ON a.ifeed = b.ifeed
+                 INNER JOIN t_user c
+                            ON a.iuser = c.iuser
+        ORDER BY a.ifeed DESC
+    </select>
 </mapper>

@@ -7,6 +7,9 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class FeedDomain {
+public class FeedDomain extends FeedEntity{
     private String writer;
+    private String mainProfile;
+    private int ifeedimg;
+    private String img;
 }
