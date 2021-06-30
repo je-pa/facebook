@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.koreait.facebook.feed.FeedMapper">
+    <resultMap id="FeedDomainMap" type="FeedDomain2">
+            <result property="ifeed" column="ifeed"></result>
+<!--        이름똑같아서 안적어 줘도 됨-->
+<!--        <collection property="imgList" column="ifeed" javaType="ArrayList"-->
+<!--                    ofType="FeedImgEntity" select="selFeedImgList"></collection>-->
+        <collection property="imgList" column="ifeed" select="selFeedImgList"></collection>
+        <!--        collection 타입이 ArrayList / select문을 사용해서 결과물을 imgList에 담겠다/-->
+    </resultMap>
+
     <insert id="insFeed" useGeneratedKeys="true" keyProperty="ifeed">
         INSERT INTO t_feed
         (location, ctnt, iuser)
@@ -22,5 +31,20 @@
                  INNER JOIN t_user c
                             ON a.iuser = c.iuser
         ORDER BY a.ifeed DESC
+    </select>
+
+    <select id="selFeedList2" resultMap="FeedDomainMap">
+        SELECT a.ifeed,a.location, a.ctnt, a.iuser, a.regdt
+              , c.nm AS writer, c.mainProfile
+        FROM t_feed a
+        INNER JOIN t_user c
+             ON a.iuser = c.iuser
+        ORDER BY a.ifeed DESC
+            LIMIT #{startIdx}, #{limit}
+    </select>
+
+    <select id="selFeedImgList" resultType="FeedImgEntity">
+        SELECT ifeedimg, ifeed, img FROM t_feed_img
+        WHERE ifeed = #{ifeed}
     </select>
 </mapper>

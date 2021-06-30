@@ -56,7 +56,7 @@ nav {
     margin-top: 80px;
     padding: 30px;
 }
-.hide{display:none;}
+.hide{display:none !important;}
 .modal{z-index: 100; position: fixed; top:0; left:0; height: 100%; width: 100%; background-color: rgba(0, 0, 0, 0.87);}
 /*z-index 올라오는 순위 숫자가 높을수록 우선순위가 높음*/
 .modal_close_parent{display: flex; justify-content: flex-end; padding: 40px 60px;}
