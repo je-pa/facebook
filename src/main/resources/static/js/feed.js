@@ -4,8 +4,8 @@ const feedObj = { //home2.js에서 값 넣어줌
     currentPage: 1,
     url: '',
     swiper: null,
-    containerElem: null,
-    loadingElem: null,
+    containerElem: document.querySelector('#feedContainer'),
+    loadingElem: document.querySelector('.loading'),
     makeFeedList: function(data) {
         if(data.length == 0) { return; }
 

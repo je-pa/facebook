@@ -3,6 +3,9 @@ package com.koreait.facebook.user;
 import com.koreait.facebook.common.EmailService;
 import com.koreait.facebook.common.MyFileUtils;
 import com.koreait.facebook.common.MySecurityUtils;
+import com.koreait.facebook.feed.FeedMapper;
+import com.koreait.facebook.feed.model.FeedDTO;
+import com.koreait.facebook.feed.model.FeedDomain2;
 import com.koreait.facebook.security.IAuthenticationFacade;
 import com.koreait.facebook.user.model.UserEntity;
 import com.koreait.facebook.user.model.UserProfileEntity;
@@ -17,27 +20,15 @@ import java.util.Map;
 
 @Service
 public class UserService {
-    @Autowired
-    private EmailService email;
-
-    @Autowired
-    private IAuthenticationFacade auth;
+    @Autowired private EmailService email;
+    @Autowired private IAuthenticationFacade auth;
     //인터페이스 -> 구현한 친구(class)만 바꾸면됨
-
-    @Autowired
-    private MyFileUtils myFileUtils;
-
-    @Autowired
-    private MySecurityUtils secUtils;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private UserMapper mapper;
-
-    @Autowired
-    private UserProfileMapper profileMapper;
+    @Autowired private MyFileUtils myFileUtils;
+    @Autowired private MySecurityUtils secUtils;
+    @Autowired private PasswordEncoder passwordEncoder;
+    @Autowired private UserMapper mapper;
+    @Autowired private FeedMapper feedMapper;
+    @Autowired private UserProfileMapper profileMapper;
 
     public int join(UserEntity param){
         String authCd = secUtils.getRandomDigit(5);
@@ -125,4 +116,8 @@ public class UserService {
         return res;
     }
 
+    public List<FeedDomain2> selFeedList2(FeedDTO param) {
+        param.setIuser(auth.getLoginUserPk());
+        return feedMapper.selFeedList2(param);
+    }
 }
