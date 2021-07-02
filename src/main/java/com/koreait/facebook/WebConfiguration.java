@@ -10,7 +10,7 @@ import org.springframework.web.servlet.resource.PathResourceResolver;
 public class WebConfiguration implements WebMvcConfigurer {
 
     @Value("${spring.servlet.multipart.location}")
-    private String uploadImagePath;
+    private String uploadImagePath; //D:/springImg
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry){

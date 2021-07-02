@@ -1,3 +1,23 @@
+function getDateTimeInfo(dt){
+    const nowDt = new Date();
+    const targetDt = new Date(dt);
+
+    const nowDtSec = parseInt(nowDt.getTime() / 1000);
+    const targetDtSec = parseInt(targetDt.getTime()/1000);
+
+    const diffSec = nowDtSec - targetDtSec; // 초
+    if(diffSec < 60 ){
+        return `${diffSec}초 전`;
+    }else if(diffSec<3600){ //분단위
+        return `${parseInt(diffSec/60)}분 전`;
+    }else if(diffSec<86400){//시간단위
+        return `${parseInt(diffSec/3600)}시간 전`;
+    }else if(diffSec<604800){
+        return `${parseInt(diffSec/86400)}일 전`;
+    }
+    return targetDt.toLocaleString();
+}
+
 const feedObj = { //home2.js에서 값 넣어줌
     limit: 5,
     itemLength: 0,
@@ -11,10 +31,13 @@ const feedObj = { //home2.js에서 값 넣어줌
 
         for(let i=0; i<data.length; i++) {
             const item = data[i];
-
+            //var로 하면 마지막 값으로 저장
+            //클로저? 안됨 호이스팅 됨
             const itemContainer = document.createElement('div');
             itemContainer.classList.add('item');
 
+            //글쓴이 정보 영역( top)
+            const regDtInfo = getDateTimeInfo(item.regdt);
             const topDiv = document.createElement('div');
             topDiv.classList.add('top')
             topDiv.innerHTML = `
@@ -22,11 +45,11 @@ const feedObj = { //home2.js에서 값 넣어줌
                 <img src="/pic/profile/${item.iuser}/${item.mainProfile}">
             </div>
             <div>
-                <div>${item.writer}</div>
+                <div>${item.writer}  ${regDtInfo}</div>
                 <div>${item.location == null ? '' : item.location}</div>
             </div>
         `;
-
+            //이미지영역
             const imgDiv = document.createElement('div');
             imgDiv.classList.add('itemImg');
 
@@ -53,12 +76,115 @@ const feedObj = { //home2.js에서 값 넣어줌
 
             itemContainer.append(topDiv);
             itemContainer.append(imgDiv);
+
+            //좋아요 영역 이벤트 걸어야해서 innerHtml 안함
+            const favDiv = document.createElement('div');
+            favDiv.classList.add('favCont');
+            const heartIcon = document.createElement('i');
+            // heartIcon.classList.add('fa-heart');
+            // heartIcon.classList.add('pointer');
+            heartIcon.className = 'fa-heart pointer';
+
+            if(item.isFav ===1){ //좋 o
+                heartIcon.classList.add('fas');
+            } else { //좋아요 x
+                heartIcon.classList.add('far');
+            }
+            const heartCntSpan = document.createElement('span');
+            heartCntSpan.innerText = item.favCnt;
+
+            //이벤트를 거는순간 클로저 현상으로 메모리가 저장?고정? 된다
+            //클로저 : 소멸되야하는데 소멸되지 않는 특성성
+           heartIcon.addEventListener('click',()=>{
+                console.log('ifeed:'+item.ifeed);
+                // const type = heartIcon.classList.contains('fas')?0:1;//앞으로 변경되어야 할 값!
+                item.isFav = 1-item.isFav;
+                fetch(`fav?ifeed=${item.ifeed}&type=${item.isFav}`)
+                    .then(res => res.json())
+                    .then(myJson=>{
+                        if(myJson===1){
+                            switch (type){
+                                case 0: // o-> x
+                                    heartIcon.classList.remove('fas');
+                                    heartIcon.classList.add('far');
+                                    heartCntSpan.innerText--;
+                                    break;
+                                case 1: //x -> o
+                                    heartIcon.classList.remove('far');
+                                    heartIcon.classList.add('fas');
+                                    heartCntSpan.innerText++;
+                                    break;
+                            }
+                        }
+                    })
+            });
+            favDiv.append(heartIcon);
+
+            favDiv.append(heartCntSpan);
+
+            itemContainer.append(favDiv);
+
+            //글 내용 영역
             if(item.ctnt != null) {
                 const ctntDiv = document.createElement('div');
                 ctntDiv.innerText = item.ctnt;
                 ctntDiv.classList.add('itemCtnt');
                 itemContainer.append(ctntDiv);
             }
+            //댓글 영역
+            const cmtDiv = document.createElement('div');
+            const cmtListDiv = document.createElement('div');
+            const cmtFormDiv = document.createElement('div');
+            cmtDiv.append(cmtListDiv);
+            cmtDiv.append(cmtFormDiv);
+
+            const cmtInput = document.createElement('input');
+            cmtInput.type='text';
+            cmtInput.placeholder = '댓글을 입력하세요...';
+
+            const cmtBtn = document.createElement('input');
+            cmtBtn.type = 'button';
+            cmtBtn.value = '등록';
+            cmtBtn.addEventListener('click',()=>{
+                const cmt = cmtInput.value;
+                if(cmt.length===0){
+                    alert('댓글 내용을 작성해 주세요.');
+                    return;
+                }
+
+                const param = {
+                    ifeed: item.ifeed,
+                    cmt: cmt
+                }
+                fetch('cmt',{
+                    method:'POST',
+                    headers:{
+                        'Accept':'application/json',
+                        'Content-Type':'application/json'
+                    },
+                    body:JSON.stringify(param)
+                })
+                    .then(res=>res.json())
+                    .then(myJson=>{
+                        console.log(myJson);
+                        switch (myJson){
+                            case 0:
+                                alert('댓글 등록 불가');
+                                break;
+                            case 1:
+                                cmtInput.value='';
+                                break;
+                        }
+                    })
+                    .catch(err=>{
+                        console.log('1 '+err);
+                    });
+            });
+
+            cmtFormDiv.append(cmtInput);
+            cmtFormDiv.append(cmtBtn);
+
+            itemContainer.append(cmtDiv);
             this.containerElem.append(itemContainer);
         }
         if(this.swiper != null) { this.swiper = null; }
