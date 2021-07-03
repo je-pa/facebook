@@ -41,14 +41,14 @@ const feedObj = { //home2.js에서 값 넣어줌
             const topDiv = document.createElement('div');
             topDiv.classList.add('top')
             topDiv.innerHTML = `
-            <div class="itemProfileCont">
-                <img src="/pic/profile/${item.iuser}/${item.mainProfile}">
-            </div>
-            <div>
-                <div>${item.writer}  ${regDtInfo}</div>
-                <div>${item.location == null ? '' : item.location}</div>
-            </div>
-        `;
+                <div class="itemProfileCont">
+                    <img src="/pic/profile/${item.iuser}/${item.mainProfile}">
+                </div>
+                <div>
+                    <div>${item.writer}  ${regDtInfo}</div>
+                    <div>${item.location == null ? '' : item.location}</div>
+                </div>
+            `;
             //이미지영역
             const imgDiv = document.createElement('div');
             imgDiv.classList.add('itemImg');
@@ -103,7 +103,7 @@ const feedObj = { //home2.js에서 값 넣어줌
                     .then(res => res.json())
                     .then(myJson=>{
                         if(myJson===1){
-                            switch (type){
+                            switch (item.isFav){
                                 case 0: // o-> x
                                     heartIcon.classList.remove('fas');
                                     heartIcon.classList.add('far');
@@ -133,15 +133,56 @@ const feedObj = { //home2.js에서 값 넣어줌
             }
             //댓글 영역
             const cmtDiv = document.createElement('div');
+            // cmtDiv.classList.add('cmt');
+            // if(item.cmt!=null){
+            //     const cmtItemContDiv = document.createElement('div');
+            //     cmtDiv.innerHTML =`
+            //     <div class="cmt1">
+            //         <div class="cmtWriterProfile">
+            //             <img src="/pic/profile/${item.cmt.iuser}/${item.mainProfile}">
+            //         </div>
+            //         <div>
+            //             <div>${item.cmt.writer}</div>
+            //             <div>${item.cmt.cmt}</div>
+            //         </div>
+            //     </div>
+            // `;
+            // }
+
             const cmtListDiv = document.createElement('div');
             const cmtFormDiv = document.createElement('div');
             cmtDiv.append(cmtListDiv);
-            cmtDiv.append(cmtFormDiv);
+            if(item.cmt!=null && item.cmt.isMore===1){
+                const moreCmtDiv = document.createElement('div');
+                const moreCmtSpan = document.createElement('span');
+                moreCmtDiv.className = 'pointer';
+                moreCmtSpan.innerText = '댓글 더보기';
+                moreCmtSpan.addEventListener('click',()=>{
+                    moreCmtSpan.remove();
+                    fetch(`cmt?ifeed=${item.ifeed}`)
+                        .then(res=>res.json())
+                        .then(result =>{
+                            console.log(result);
+                            result.forEach(obj =>{
+                                const cmtItemContainerDiv =this.makeCmtItem(obj);
+                                cmtListDiv.append(cmtItemContainerDiv);
+                            })
+                        })
+                })
+                moreCmtDiv.append(moreCmtSpan);
+                cmtDiv.append(moreCmtDiv);
+            }
+            cmtDiv.append(cmtListDiv);
 
+            cmtDiv.append(cmtFormDiv);
             const cmtInput = document.createElement('input');
             cmtInput.type='text';
             cmtInput.placeholder = '댓글을 입력하세요...';
 
+            if(item.cmt!=null){ //댓글 있음
+                const cmtItemContainertDiv = this.makeCmtItem(item.cmt);
+                cmtListDiv.append(cmtItemContainertDiv);
+            }
             const cmtBtn = document.createElement('input');
             cmtBtn.type = 'button';
             cmtBtn.value = '등록';
@@ -221,6 +262,27 @@ const feedObj = { //home2.js에서 값 넣어줌
         }).then(() => {
             this.hideLoading();
         });
+    },
+    makeCmtItem: function ({iuser, writerProfile, writer, cmt}){ //객체를 받아서 필요한 값만 쓰겠다
+        const cmtItemContainertDiv = document.createElement('div');
+        cmtItemContainertDiv.className='cmtItemCont';
+        //프로필
+        const cmtItemProfileDiv = document.createElement('div');
+        cmtItemProfileDiv.className='cmtItemProfile';
+        const cmtItemWriterProfileImg = document.createElement('img');
+        cmtItemWriterProfileImg.src = `/pic/profile/${iuser}/${writerProfile}`;
+        cmtItemWriterProfileImg.className = 'profile w30';
+
+        cmtItemProfileDiv.append(cmtItemWriterProfileImg);
+        cmtItemContainertDiv.append(cmtItemProfileDiv);
+
+        //댓글
+        const cmtItemCtntDiv = document.createElement('div');
+        cmtItemCtntDiv.className='cmtItemCtnt';
+        cmtItemCtntDiv.innerHTML = `<div>${writer}</div><div>${cmt}</div>`;
+        cmtItemContainertDiv.append(cmtItemCtntDiv);
+
+        return cmtItemContainertDiv;
     },
     hideLoading: function() { this.loadingElem.classList.add('hide');},
     showLoading: function() { this.loadingElem.classList.remove('hide'); }

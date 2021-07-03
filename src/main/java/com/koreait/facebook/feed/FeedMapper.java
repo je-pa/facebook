@@ -16,5 +16,5 @@ public interface FeedMapper {
     int delFeedFav(FeedFavEntity param);
 
     int insFeedCmt(FeedCmtEntity param);
-    List<FeedCmtDomain> selFeedCmtList(int ifeed);
+    List<FeedCmtDomain> selFeedCmtList(FeedCmtEntity param);
 }

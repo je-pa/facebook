@@ -58,4 +58,10 @@ public class FeedController {
     public int insFeedCmt(@RequestBody FeedCmtEntity param){
         return service.insFeedCmt(param);
     }
+
+    @ResponseBody
+    @GetMapping("/cmt")
+    public List<FeedCmtDomain> cmtList(FeedCmtEntity param){
+        return service.selFeedCmtList(param);
+    }
 }
