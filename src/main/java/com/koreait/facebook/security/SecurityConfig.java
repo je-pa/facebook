@@ -26,20 +26,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {//오버라이
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/pic/**","/css/**", "/js/**", "/img/**", "/error", "favicon.ico", "/resources/**");
-    }
+        web.ignoring().antMatchers("/pic/**","/css/**", "/js/**", "/img/**", "/error", "favicon.ico", "/resources/**"); //static resouse 부분
+    }//바로 dis로 보내줌
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable();
+        http.csrf().disable();//공격 차단
 
-        http.authorizeRequests()
+        http.authorizeRequests()//모두 접근허용
                 .antMatchers("/user/login", "/user/join", "/user/auth").permitAll()
-                .anyRequest().authenticated();
+                .anyRequest().authenticated();//나머진 인증처리 //컨트롤러쪽
 
         http.formLogin()
                 .loginPage("/user/login")
-                .usernameParameter("email")
+                .usernameParameter("email") //UserEntity
                 .passwordParameter("pw")
                 .defaultSuccessUrl("/feed/home");
 
@@ -51,6 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {//오버라이
 
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetails).passwordEncoder(passwordEncoder());
-    }
+        auth.userDetailsService(userDetails).passwordEncoder(passwordEncoder());//bCrypt사용가능
+    }//오버라이드 함으로서 userDetails 부분을 우리가 implemet한 UserDetailServiceImpl을 받을 수 있다
+    //Bean등록 되있는 BCryptPasswordEncoder()사용할수있다.
 }

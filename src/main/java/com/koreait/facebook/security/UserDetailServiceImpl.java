@@ -21,6 +21,6 @@ public class UserDetailServiceImpl implements UserDetailsService {
         if(loginUser == null) {
             return null; //아이디가 없는 상태
         }
-        return new UserDetailsImpl(loginUser); //아이디는 있는 상태
+        return new UserDetailsImpl(loginUser); //아이디는 있는 상태 //생성자
     }
 }
