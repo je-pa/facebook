@@ -36,7 +36,7 @@ public class UserDetailsImpl implements UserDetails {
 //
 //    public UserEntity getUser() {
 //        return user;
-//    }
+//    } @Getter 해줘서
     @Override
     public boolean isAccountNonExpired() {
         return true;
