@@ -8,6 +8,7 @@ import com.koreait.facebook.feed.model.FeedDTO;
 import com.koreait.facebook.feed.model.FeedDomain2;
 import com.koreait.facebook.security.IAuthenticationFacade;
 import com.koreait.facebook.user.model.UserEntity;
+import com.koreait.facebook.user.model.UserDomain;
 import com.koreait.facebook.user.model.UserProfileEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -93,6 +94,9 @@ public class UserService {
             }
         }
     }
+    public UserDomain selUserProfile(UserEntity param){
+        return profileMapper.selUserProfile(param);
+    }
 
     public List<UserProfileEntity> selUserProfileList(UserEntity param) {
         return profileMapper.selUserProfileList(param);
@@ -116,8 +120,7 @@ public class UserService {
         return res;
     }
 
-    public List<FeedDomain2> selFeedList2(FeedDTO param) {
-        param.setIuserForMyFeed(auth.getLoginUserPk());
+    public List<FeedDomain2> selFeedList2(FeedDTO param) {//iuser값도 같이 보내줄거다 로그인한사람만 말고..?
         return feedMapper.selFeedList2(param);
     }
 }

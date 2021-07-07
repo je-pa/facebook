@@ -7,9 +7,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class UserProfileEntity {
-    private int iprofile;
-    private int iuser;
-    private String img;
-    private String regdt;
+public class UserDomain extends UserEntity{
+    private int cntFeed;
+    private int cntFollower; //팔로워
+    private int cntFollow;
 }

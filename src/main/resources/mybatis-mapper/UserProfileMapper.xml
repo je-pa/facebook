@@ -8,6 +8,15 @@
         VALUES
         (#{iuser},#{img})
     </insert>
+    <select id="selUserProfile" resultType="UserProfileDomain">
+        SELECT
+            a.iuser, a.email, a.nm, a.tel, a.mainProfile, a.regdt
+             , (SELECT COUNT(ifeed) FROM t_feed WHERE iuser = ${iuser}) AS cntFeed
+             , (SELECT COUNT(iuserMe) FROM t_user_follow WHERE iuserMe = ${iuser}) AS cntFollow
+             , (SELECT COUNT(iuserYou) FROM t_user_follow WHERE iuserYou = ${iuser}) AS cntFollow
+        FROM t_user a
+        WHERE a.iuser = ${iuser};
+    </select>
     <select id="selUserProfileList" resultType="UserProfileEntity">
         SELECT iprofile, img
         FROM t_user_profile

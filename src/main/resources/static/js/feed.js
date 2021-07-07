@@ -23,9 +23,11 @@ const feedObj = { //home2.js에서 값 넣어줌
     itemLength: 0,
     currentPage: 1,
     url: '',
+    iuser:0,
     swiper: null,
     containerElem: document.querySelector('#feedContainer'),
     loadingElem: document.querySelector('.loading'),
+
     makeFeedList: function(data) {
         if(data.length == 0) { return; }
 
@@ -178,6 +180,13 @@ const feedObj = { //home2.js에서 값 넣어줌
             const cmtInput = document.createElement('input');
             cmtInput.type='text';
             cmtInput.placeholder = '댓글을 입력하세요...';
+            cmtInput.addEventListener('keyup',(e)=>{
+               console.log(e.key);
+               console.log(e.code);
+               if(e.key ==='Enter'){
+                   cmtBtn.click();
+               }
+            });
 
             if(item.cmt!=null){ //댓글 있음
                 const cmtItemContainertDiv = this.makeCmtItem(item.cmt);
@@ -213,7 +222,17 @@ const feedObj = { //home2.js에서 값 넣어줌
                                 alert('댓글 등록 불가');
                                 break;
                             case 1:
+                                const globalConstElem = document.querySelector('#globalConst');
+                                const param = {...globalConstElem.dataset};//객체 복사
+                                param.cmt = cmtInput.value;
+                                //cmt속성값 추가
+                                // 복사해서 썼기에 html에 적용X
+
+                                const cmtItemDiv = this.makeCmtItem(param);
+                                cmtListDiv.append(cmtItemDiv);
+
                                 cmtInput.value='';
+                                //댓글 추가한다
                                 break;
                         }
                     })
@@ -251,7 +270,7 @@ const feedObj = { //home2.js에서 값 넣어줌
     getFeedList: function(page) {
         this.showLoading();
         console.log(page);
-        fetch(`${this.url}?page=${page}&limit=${this.limit}`)
+        fetch(`${this.url}?iuserForMyFeed=${this.iuser}&page=${page}&limit=${this.limit}`)
             .then(res => res.json())
             .then(myJson => {
                 console.log(myJson);

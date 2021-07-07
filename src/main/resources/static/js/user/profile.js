@@ -6,16 +6,17 @@ const modalCloseElem = document.querySelector('section .modal .modal_close');
 //이벤트는 메인 이미지 변경처리
 const profileImgParentList = document.querySelectorAll('.profile-img-parent');
 profileImgParentList.forEach(item => {
-    const iElem = item.querySelector('i');
-    if(iElem != null) { //메인  프로필일때 null이다
+    const iElem = item.querySelector('i');//부모(profile-)안에 있는 i를 가져온다
+    if(iElem != null) { //메인  프로필일때 null이다 => unless를 사용했기 때문
         addIElemEvent(iElem);
     }
 });
 
 //메인이미지 바꾸기 아이콘에 이벤트 설정
-function addIElemEvent(target) {
+function addIElemEvent(target) { //target은 자식인 i이다
     target.addEventListener('click', () => {
         const iprofile = target.parentNode.dataset.iprofile;
+        //부모의 attr="data-iprofile값을 들고온다
         console.log(iprofile);
         changeMainProfile(iprofile);
     });
@@ -86,6 +87,9 @@ modalCloseElem.addEventListener('click', () => {
    modalElem.classList.add('hide');
    //  location.reload();
 })
+const localConstElem = document.querySelector('#localConst');
+
 feedObj.url = '/user/feedList';
 feedObj.setScrollInfinity(window);
+feedObj.iuser = localConstElem.dataset.iuser;
 feedObj.getFeedList(1);
