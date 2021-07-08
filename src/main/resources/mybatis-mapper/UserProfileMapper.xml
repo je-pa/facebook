@@ -8,7 +8,7 @@
         VALUES
         (#{iuser},#{img})
     </insert>
-    <select id="selUserProfile" resultType="UserProfileDomain">
+    <select id="selUserProfile" resultType="UserDomain">
         SELECT
             a.iuser, a.email, a.nm, a.tel, a.mainProfile, a.regdt
              , (SELECT COUNT(ifeed) FROM t_feed WHERE iuser = ${iuser}) AS cntFeed
