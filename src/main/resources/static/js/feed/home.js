@@ -63,6 +63,7 @@ function makeFeedList(data){
             img.src=`/pic/feed/${item.ifeed}/${item.img}`;
             swiperSlideDiv.append(img);
             swiperWrapperDiv.append(swiperSlideDiv);
+            // swiperWrapperDiv.swiperSlideDiv.img.className = 'square';
         }
     }
 

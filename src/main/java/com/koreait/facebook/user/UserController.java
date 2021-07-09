@@ -4,7 +4,9 @@ import com.koreait.facebook.common.MyConst;
 import com.koreait.facebook.feed.model.FeedDTO;
 import com.koreait.facebook.feed.model.FeedDomain2;
 import com.koreait.facebook.security.UserDetailsImpl;
+import com.koreait.facebook.user.model.UserDTO;
 import com.koreait.facebook.user.model.UserEntity;
+import com.koreait.facebook.user.model.UserFollowEntity;
 import com.koreait.facebook.user.model.UserProfileEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -51,11 +53,14 @@ public class UserController {
     @GetMapping("/profile")
     public void profile(Model model, UserEntity param, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         System.out.println(param);
-        if(param.getIuser()==0){
+        UserDTO param2=new UserDTO();
+        param2.setYouIuser(param.getIuser());
+        if(param2.getYouIuser()==0){
+            param2.setYouIuser(userDetails.getUser().getIuser());
             param.setIuser(userDetails.getUser().getIuser());
         }
 //        UserEntity loginUser = userDetails.getUser();// autowired해도 되긴한데 여기밖에 안써서..
-        model.addAttribute(myConst.PROFILE, service.selUserProfile(param));
+        model.addAttribute(myConst.PROFILE, service.selUserProfile(param2));
         model.addAttribute(myConst.PROFILE_LIST, service.selUserProfileList(param));
     }
 
@@ -75,5 +80,19 @@ public class UserController {
     @GetMapping("/feedList")
     public List<FeedDomain2> selFeedList2(FeedDTO param) {
         return service.selFeedList2(param);
+    }
+
+    @ResponseBody
+    @PostMapping("/follow")
+    public Map<String,Object> dolFollow(@RequestBody UserFollowEntity param){
+        System.out.println(param);
+        return service.insUserFollow(param);
+    }
+
+    @ResponseBody
+    @DeleteMapping("/follow")
+    public Map<String,Object> cancelFollow(UserFollowEntity param){
+        System.out.println(param);
+        return service.delUserFollow(param);
     }
 }

@@ -1,15 +1,14 @@
 package com.koreait.facebook.user;
 
 import com.koreait.facebook.common.EmailService;
+import com.koreait.facebook.common.MyConst;
 import com.koreait.facebook.common.MyFileUtils;
 import com.koreait.facebook.common.MySecurityUtils;
 import com.koreait.facebook.feed.FeedMapper;
 import com.koreait.facebook.feed.model.FeedDTO;
 import com.koreait.facebook.feed.model.FeedDomain2;
 import com.koreait.facebook.security.IAuthenticationFacade;
-import com.koreait.facebook.user.model.UserEntity;
-import com.koreait.facebook.user.model.UserDomain;
-import com.koreait.facebook.user.model.UserProfileEntity;
+import com.koreait.facebook.user.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -30,6 +29,9 @@ public class UserService {
     @Autowired private UserMapper mapper;
     @Autowired private FeedMapper feedMapper;
     @Autowired private UserProfileMapper profileMapper;
+
+    @Autowired
+    private MyConst myConst;
 
     public int join(UserEntity param){
         String authCd = secUtils.getRandomDigit(5);
@@ -94,7 +96,8 @@ public class UserService {
             }
         }
     }
-    public UserDomain selUserProfile(UserEntity param){
+    public UserDomain selUserProfile(UserDTO param){
+        param.setMeIuser(auth.getLoginUserPk());
         return profileMapper.selUserProfile(param);
     }
 
@@ -122,5 +125,32 @@ public class UserService {
 
     public List<FeedDomain2> selFeedList2(FeedDTO param) {//iuser값도 같이 보내줄거다 로그인한사람만 말고..?
         return feedMapper.selFeedList2(param);
+    }
+
+    //팔로우하기
+    public Map<String,Object> insUserFollow(UserFollowEntity param){
+        param.setIuserMe(auth.getLoginUserPk());
+        Map<String,Object> res = new HashMap();
+        res.put(myConst.RESULT, mapper.insUserFollow(param));
+
+        return res;
+    }
+
+    //팔로우ㅅ취소
+    public Map<String,Object> delUserFollow(UserFollowEntity param){
+        param.setIuserMe(auth.getLoginUserPk());
+        int result = mapper . delUserFollow(param);
+
+        Map<String, Object> res = new HashMap<>();
+        res.put(myConst.RESULT, result);
+        if(result == 1){
+            UserFollowEntity param2 = new UserFollowEntity();
+            param2.setIuserMe(param.getIuserYou());
+            param2.setIuserYou(param.getIuserMe());
+
+            UserFollowEntity result2 = mapper.selUserFollow(param2);
+            res.put(myConst.YOU_FOLLOW_ME, result2);
+        }
+        return null;
     }
 }

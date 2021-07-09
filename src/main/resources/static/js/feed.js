@@ -44,16 +44,19 @@ const feedObj = { //home2.js에서 값 넣어줌
             itemContainer.classList.add('item');
 
             //글쓴이 정보 영역( top)
+            let imgTag = ``;
+            if(item.mainProfile != null){
+                imgTag = `<img src="/pic/profile/${item.iuser}/${item.mainProfile}" class="pointer profile wh30"
+                              onClick="moveToProfile(${item.iuser});" onError="this.style.display='none';">`;
+            }
             const regDtInfo = getDateTimeInfo(item.regdt);
             const topDiv = document.createElement('div');
 
             topDiv.classList.add('top')
             topDiv.innerHTML = `
-                <div class="itemProfileCont">
-                    <img src="/pic/profile/${item.iuser}/${item.mainProfile}" class ="pointer" onclick="moveToProfile(${item.iuser})">
-                </div>
+                <div class="itemProfileCont"> ${imgTag} </div>
                 <div>
-                    <div><span class ="pointer" onclick="moveToProfile(${item.iuser})">${item.writer}  ${regDtInfo}</div>
+                    <div><span class ="pointer" onclick="moveToProfile(${item.iuser});">${item.writer}</span>  ${regDtInfo}</div>
                     <div>${item.location == null ? '' : item.location}</div>
                 </div>
             `;
@@ -70,7 +73,7 @@ const feedObj = { //home2.js에서 값 넣어줌
             swiperContainerDiv.append(swiperWrapperDiv);
             imgDiv.append(swiperContainerDiv);
 
-            for(let z=0; z<item.imgList.length; z++) {
+            for(let z=0; z<item.imgList.length ; z++) {
                 const imgObj = item.imgList[z];
 
                 const swiperSlideDiv = document.createElement('div');
@@ -296,7 +299,7 @@ const feedObj = { //home2.js에서 값 넣어줌
         cmtItemProfileDiv.className='cmtItemProfile';
         const cmtItemWriterProfileImg = document.createElement('img');
         cmtItemWriterProfileImg.src = `/pic/profile/${iuser}/${writerProfile}`;
-        cmtItemWriterProfileImg.className = 'profile w30 pointer';
+        cmtItemWriterProfileImg.className = 'profile wh30 pointer';
         cmtItemWriterProfileImg.addEventListener('click',()=>{
             moveToProfile(iuser);
         });
