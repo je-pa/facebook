@@ -19,6 +19,8 @@
         FROM t_user a
         WHERE a.iuser = ${youIuser};
     </select>
+<!--    게시글수, 팔로우수, 팔로잉수 는 컬럼을 추가하는것도 좋을것같다-->
+
     <select id="selUserProfileList" resultType="UserProfileEntity">
         SELECT iprofile, img
         FROM t_user_profile

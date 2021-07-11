@@ -1,3 +1,4 @@
+//~1분전 => ~59초 전 / ~ 1시간전 = > ~59분 전 / ~23시간 전 / ~6일전
 function getDateTimeInfo(dt){
     const nowDt = new Date();
     const targetDt = new Date(dt);
