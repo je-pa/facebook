@@ -65,6 +65,18 @@
         WHERE iuserMe = ${iuserMe} AND iuserYou = ${iuserYou}
     </select>
 
+    <select id="selUserFollowList" resultType="UserDomain">
+        SELECT b.iuser, b.nm, b.mainProfile
+             , CASE WHEN c.iuserMe is NULL  THEN 0 ELSE 1 END AS isMeFollowYou
+         FROM t_user_follow a
+         INNER JOIN t_user b
+            ON a.iuserYou = b.iuser
+            AND iuserMe= ${iuserYou} --프로필 주인
+         LEFT JOIN t_user_follow c
+           ON c.iuserMe = ${iuserMe} -- 로그인한사람
+           AND c.iuserYou = a.iuserYou;
+    </select>
+
     <delete id="delUserFollow">
         DELETE from t_user_follow
         WHERE iuserMe = ${iuserMe} AND iuserYou = ${iuserYou}

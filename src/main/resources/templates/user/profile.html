@@ -30,10 +30,10 @@
               <tr>
                   <td>게시물</td>
                   <td th:text="${profile.cntFeed}"></td>
-                  <td>팔로워</td>
-                  <td th:text="${profile.cntFollower}"></td>
-                  <td>팔로우</td>
-                  <td th:text="${profile.cntFollow}"></td>
+                  <td class="pointer follower">팔로워</td>
+                  <td class="pointer follower" th:text="${profile.cntFollower}"></td>
+                  <td class="pointer follow">팔로우</td>
+                  <td class="pointer follow" th:text="${profile.cntFollow}"></td>
                   <td>
                       <th:block th:if="${profile.isMeFollowYou eq 1}">
                           <input type="button" class="instaBtn instaBtnEnable" id="btnFollow" data-follow="1" value="팔로우 취소">
@@ -73,6 +73,16 @@
 
   <div id="feedContainer"></div>
   <div class="loading hide"><img th:src="@{/img/loading.gif}"></div>
+
+    <div class="modal-follow hide">
+        <div>
+            <div class="container">
+                <div id="title">팔로우</div>
+                <i id="modal-follow-close" class="modal_close fas fa-times"></i>
+            </div>
+            <div class="followCont"></div>
+        </div>
+    </div>
 
   <div class="modal hide">
     <div class="modal_close_parent"><i class="modal_close fas fa-times"></i></div>

@@ -123,9 +123,9 @@ public class UserService {
         return res;
     }
 
-    public List<FeedDomain2> selFeedList2(FeedDTO param) {//iuser값도 같이 보내줄거다 로그인한사람만 말고..?
-        return feedMapper.selFeedList2(param);
-    }
+//    public List<FeedDomain2> selFeedList2(FeedDTO param) {//iuser값도 같이 보내줄거다 로그인한사람만 말고..?
+//        return feedMapper.selFeedList2(param);
+//    }
 
     //팔로우하기
     public Map<String,Object> insUserFollow(UserFollowEntity param){
@@ -134,6 +134,13 @@ public class UserService {
         res.put(myConst.RESULT, mapper.insUserFollow(param));
 
         return res;
+    }
+    public List<FeedDomain2> selFeedList2(FeedDTO param) {
+        return feedMapper.selFeedList2(param);
+    }
+    public List<UserDomain> selUserFollowList(UserFollowEntity param) {
+        param.setIuserMe(auth.getLoginUserPk());
+        return mapper.selUserFollowList(param);
     }
 
     //팔로우ㅅ취소
