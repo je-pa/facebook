@@ -143,7 +143,7 @@ feedObj.setScrollInfinity(window);
 feedObj.iuser = localConstElem.dataset.iuser;
 feedObj.getFeedList(1);
 
-// ------------------------팔로우 모달 -------------------------------------
+/******************************************************** 팔로우 모달 **/
 const followerElemArr = document.querySelectorAll('.pointer.follower');
 const followElemArr = document.querySelectorAll('.pointer.follow');
 const modalFollowElem = document.querySelector('.modal-follow');
@@ -157,6 +157,18 @@ if(followerElemArr) {
             modalFollowTitleElem.innerText = '팔로워';
             modalFollowElem.classList.remove('hide');
             modalFollowItemConElem.innerHTML = '';
+
+            //프로필 사용자를 팔로우한 사람들 리스트
+            fetch(`getFollowerList?iuserYou=${localConstElem.dataset.iuser}`)
+                .then(res => res.json())
+                .then(myJson => {
+                    if(myJson.length > 0) {
+                        myJson.forEach(item => {
+                            const cont = makeFollowItem(item);
+                            modalFollowItemConElem.append(cont);
+                        });
+                    }
+                });
         });
     });
 }
@@ -166,8 +178,8 @@ if(followElemArr) {
         item.addEventListener('click', () => {
             modalFollowTitleElem.innerText = '팔로우';
             modalFollowElem.classList.remove('hide');
-
             modalFollowItemConElem.innerHTML = '';
+
             //프로필 사용자가 팔로우한 사람들 리스트
             fetch(`getFollowList?iuserYou=${localConstElem.dataset.iuser}`)
                 .then(res => res.json())
@@ -196,20 +208,36 @@ function makeFollowItem(item) {
     const cont = document.createElement('div');
     cont.className = 'follow-item';
     const img = document.createElement('img');
-    img.className = 'profile wh30';
+    img.className = 'profile wh30 pointer';
     img.src = `/pic/profile/${item.iuser}/${item.mainProfile}`;
     img.onerror = () => { img.style.visibility = 'hidden'; }
+    img.addEventListener('click', ()=> {
+        moveToProfile(item.iuser); //feed.js 에 있는 메소드
+    });
 
     const nm = document.createElement('div');
-    nm.innerText = item.nm;
+    const nmText = document.createElement('span');
+    nmText.innerText = item.nm;
+    nmText.className = 'pointer';
+    nmText.addEventListener('click', ()=> {
+        moveToProfile(item.iuser); //feed.js 에 있는 메소드
+    });
+    nm.append(nmText);
+
     const btn = document.createElement('input');
-    btn.className = 'instaBtn';
+    btn.className = 'instaBtn pointer';
+    btn.dataset.follow = '0';
+    btn.addEventListener('click', () => {
+        const follow = parseInt(btn.dataset.follow);
+        followProc(follow, item.iuser, btn);
+    });
 
     cont.append(img);
     cont.append(nm);
     if(parseInt(loginIuser) !== item.iuser) {
         btn.type = 'button';
         if(item.isMeFollowYou) {
+            btn.dataset.follow = '1';
             btn.value = '팔로우 취소';
         } else {
             btn.classList.add('instaBtnEnable');

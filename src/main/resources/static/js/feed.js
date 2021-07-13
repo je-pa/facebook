@@ -18,7 +18,7 @@ function getDateTimeInfo(dt){
     }
     return targetDt.toLocaleString();
 }
-//포로필 호면
+//포로필 화면으로 이동 =>common.js에서 하는게 좋음
 function moveToProfile(iuser){
     console.log(iuser);
     location.href=`/user/profile?iuser=${iuser}`;

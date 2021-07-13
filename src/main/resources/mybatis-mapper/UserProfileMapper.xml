@@ -13,7 +13,7 @@
             a.iuser, a.email, a.nm, a.tel, a.mainProfile, a.regdt
              , (SELECT COUNT(ifeed) FROM t_feed WHERE iuser = ${youIuser}) AS cntFeed
              , (SELECT COUNT(iuserMe) FROM t_user_follow WHERE iuserMe = ${youIuser}) AS cntFollow
-             , (SELECT COUNT(iuserYou) FROM t_user_follow WHERE iuserYou = ${youIuser}) AS cntFollow
+             , (SELECT COUNT(iuserYou) FROM t_user_follow WHERE iuserYou = ${youIuser}) AS cntFollower
              , (SELECT COUNT(iuserMe) FROM t_user_follow WHERE iuserMe = ${youIuser} AND iuserYou = ${meIuser}) AS isYouFollowMe
              , (SELECT COUNT(iuserMe) FROM t_user_follow WHERE iuserMe = ${meIuser} AND iuserYou = ${youIuser}) AS isMeFollowYou
         FROM t_user a

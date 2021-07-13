@@ -143,6 +143,11 @@ public class UserService {
         return mapper.selUserFollowList(param);
     }
 
+    public List<UserDomain> selUserFollowerList(UserFollowEntity param){
+        param.setIuserMe(auth.getLoginUserPk());
+        return mapper.selUserFollowerList(param);
+    }
+
     //팔로우ㅅ취소
     public Map<String,Object> delUserFollow(UserFollowEntity param){
         param.setIuserMe(auth.getLoginUserPk());

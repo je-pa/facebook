@@ -65,16 +65,30 @@
         WHERE iuserMe = ${iuserMe} AND iuserYou = ${iuserYou}
     </select>
 
+<!--    주인장이 팔로우 한사람-->
     <select id="selUserFollowList" resultType="UserDomain">
         SELECT b.iuser, b.nm, b.mainProfile
              , CASE WHEN c.iuserMe is NULL  THEN 0 ELSE 1 END AS isMeFollowYou
          FROM t_user_follow a
          INNER JOIN t_user b
-            ON a.iuserYou = b.iuser
-            AND iuserMe= ${iuserYou} --프로필 주인
+         ON a.iuserYou = b.iuser
+         LEFT JOIN t_user_follow c
+         ON c.iuserMe = ${iuserMe} -- 로그인한사람
+         AND c.iuserYou = a.iuserYou
+         WHERE a.iuserMe= ${iuserYou} -- 프로필 주인
+    </select>
+
+<!--    주인장을 팔로우 한사람-->
+    <select id="selUserFollowerList" resultType="UserDomain">
+        SELECT b.iuser, b.nm, b.mainProfile
+             , CASE WHEN c.iuserMe is NULL  THEN 0 ELSE 1 END AS isMeFollowYou
+        FROM t_user_follow a
+         INNER JOIN t_user b
+           ON a.iuserMe = b.iuser
          LEFT JOIN t_user_follow c
            ON c.iuserMe = ${iuserMe} -- 로그인한사람
-           AND c.iuserYou = a.iuserYou;
+           AND c.iuserYou = a.iuserMe
+        WHERE a.iuserYou= ${iuserYou} -- 프로필 주인
     </select>
 
     <delete id="delUserFollow">
