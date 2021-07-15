@@ -138,6 +138,7 @@ if(btnFollowElem) {
 
 const localConstElem = document.querySelector('#localConst');
 
+
 feedObj.url = '/user/feedList';
 feedObj.setScrollInfinity(window);
 feedObj.iuser = localConstElem.dataset.iuser;
