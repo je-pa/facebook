@@ -49,7 +49,7 @@ spring:
             authorization-grant-type: authorization_code
             client-id: a5005c539a9b1af9ec6008864c27d699
             client-secret: sLROXOAbUJew483tE9X0uzrhpKUaUXff
-            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}" #{registrationId}:kakao
             scope:
               - profile_nickname
               - profile_image
@@ -59,7 +59,7 @@ spring:
             authorization-grant-type: authorization_code
             client-id: ar0BAcBw_4RWL8x2QFOb
             client-secret: IueW2Uf6wM
-            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}" #{registrationId}:naver
             scope: name,profile_image
             client-name: Naver
 

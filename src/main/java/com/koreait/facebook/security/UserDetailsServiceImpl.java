@@ -1,5 +1,6 @@
 package com.koreait.facebook.security;
 
+import com.koreait.facebook.security.model.CustomUserPrincipal;
 import com.koreait.facebook.user.UserMapper;
 import com.koreait.facebook.user.model.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserDetailServiceImpl implements UserDetailsService {
+public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired private UserMapper mapper;
 
     @Override
